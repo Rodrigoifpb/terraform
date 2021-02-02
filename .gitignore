@@ -1,1 +1,2 @@
 bucket-s3/.terraform/plugins/*
+variaveis/.terraform/plugins/*
