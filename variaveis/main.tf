@@ -8,4 +8,6 @@ provider "aws"{
 resource "aws_instace" "web" {
   ami = "${var.ami}"
   instance_type = "${var.type}"
+  ivp4_addresses = "${var.ips}"
+  tags = "${var.tags}"
 }

@@ -16,10 +16,23 @@ variable "secret_key" {
 
 variable "ami" {
   type        = string
-  default     = ""
+  default     = "umaami"
   description = "linux basico"
 }
 
 variable "type" {
   
+}
+
+variable "ips" {
+  type        = list
+  default     = ["192.168.160.2","192.168.160.3"]
+}
+
+variable "tags" {
+  type        = map
+  default     = {
+    "Nome" = "python"
+    "Env" = "dev"
+  }
 }
