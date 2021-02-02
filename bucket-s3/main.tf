@@ -1,9 +1,8 @@
 # configurando provedor
 provider "aws"{
-    access_key = "chave"
-    secret_key = "chave"
-    region = "us-east-1"
-
+    access_key = "${var.access_key}"
+    secret_key = "${var.secret_key}"
+    region = "${var.region}"
 }
 
 resource "aws_s3_bucket" "rodrigo" {
@@ -26,7 +25,3 @@ resource "aws_s3_bucket_object" "object" {
 output "bucket" {
     value = "${aws_s3_bucket.rodrigo.id}"
 }
-
-#output "etag" {
-#    value = "${aws_s3_bucket_object.object.etag}"
-#}
