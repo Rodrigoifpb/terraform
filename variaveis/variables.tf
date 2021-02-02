@@ -26,7 +26,7 @@ variable "type" {
 
 variable "ips" {
   type        = "list"
-  default     = ["192.168.160.2","192.168.160.3"]
+  default     = ["2001:0DB8:AD1F:25E2:CADE:CAFE:F0CA:84C1","2001:0DB8:AD1F:25E2:CADE:CAFE:F0CB:84C1"]
 }
 
 variable "tags" {

@@ -5,9 +5,9 @@ provider "aws"{
     region = "${var.region}"
 }
 
-resource "aws_instace" "web" {
+resource "aws_instance" "web" {
   ami = "${var.ami}"
   instance_type = "${var.type}"
-  ivp4_addresses = "${var.ips}"
+  ipv6_addresses = "${var.ips}"
   tags = "${var.tags}"
 }
