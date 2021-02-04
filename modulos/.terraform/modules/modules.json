@@ -1,1 +1,1 @@
-{"Modules":[{"Source":"./s3","Key":"1.bucket;./s3","Version":"","Dir":".terraform/modules/909e4a4348d5f53fa9c0740b38dc58fb","Root":""}]}
+{"Modules":[{"Source":"./s3","Key":"1.bucket;./s3","Version":"","Dir":".terraform/modules/909e4a4348d5f53fa9c0740b38dc58fb","Root":""},{"Source":"./s3","Key":"1.bucket-rdg;./s3","Version":"","Dir":".terraform/modules/089501e7ec1a710fbc5db5d1015a8199","Root":""}]}

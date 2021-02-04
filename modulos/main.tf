@@ -6,7 +6,7 @@ resource "random_id" "bucket"  {
   byte_length = 8
 }
 
-module "bucket" {
+module "bucket-rdg" {
     source = "./s3"
 
     name = "meu-bucket-${random_id.bucket.hex}"
