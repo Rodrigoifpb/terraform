@@ -1,3 +1,4 @@
 bucket-s3/.terraform/plugins/*
 variaveis/.terraform/plugins/*
 modulos/.terraform/plugins/*
+site-s3/.terraform/plugins/*
