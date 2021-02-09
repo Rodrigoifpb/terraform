@@ -7,3 +7,4 @@ Neste projeto temos os arquivos de alguns testes do uso do Terraform no provedor
   - Bucket S3 com inserção de arquivos
   - Exemplo de uso de variaveis
   - Utilizando Modulos
+  - Site estatico com Bucket S3, CDN e SSL
