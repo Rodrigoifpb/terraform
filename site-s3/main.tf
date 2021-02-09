@@ -9,3 +9,15 @@ data "template_file" "policy" {
     bucket_name = "${var.domain}"
   }
 }
+
+resource "null_resource" "site_files"{
+    triggers{
+        react_build = "${md5("../website/html")}"
+    }
+
+    provisioner "local-exec" {
+        command = "aws s3 sync ../website/ s3://${var.domain}"
+    }
+
+    depends_on = ["aws_s3_bucket.site"]
+}
