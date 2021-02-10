@@ -163,3 +163,57 @@ resource "aws_lb_listener" "lbl" {
     target_group_arn = "${aws_lb_target_group.tg.arn}"
   }
 }
+
+resource "aws_security_group" "autoscaling" {
+  name        = "autoscaling"
+  description = "seg do autoscaling para acesso ssh e http"
+  vpc_id      = "${aws_vpc.rede.id}"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = ["${aws_security_group.seg-lb.id}"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags {
+    Name = "Auto Scaling"
+  }
+}
+
+resource "aws_launch_configuration" "this" {
+  name_prefix                 = "autoscaling-launcher"
+  image_id                    = "${var.ami}"
+  instance_type               = "${var.instance_type}"
+  key_name                    = "${var.key_pair}"
+  security_groups             = ["${aws_security_group.autoscaling.id}"]
+  associate_public_ip_address = true
+
+  user_data = "${file("script.sh")}"
+}
+
+resource "aws_autoscaling_group" "this" {
+  name                      = "terraform-autoscaling"
+  vpc_zone_identifier       = ["${aws_subnet.public_a.id}"]
+  launch_configuration      = "${aws_launch_configuration.this.name}"
+  min_size                  = 2
+  max_size                  = 4
+  health_check_grace_period = 300
+  health_check_type         = "ELB"
+  force_delete              = true
+  target_group_arns         = ["${aws_lb_target_group.tg.arn}"]
+}

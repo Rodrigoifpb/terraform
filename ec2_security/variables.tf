@@ -17,3 +17,11 @@ variable "private_a_cidr" {
 variable "instance_type" {
   default = "t2.micro"
 }
+
+variable "ami" {
+  default = "ami-047a51fa27710816e"
+}
+
+variable "key_pair" {
+  default = "rodrigo"
+}
