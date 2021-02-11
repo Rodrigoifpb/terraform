@@ -25,3 +25,19 @@ variable "ami" {
 variable "key_pair" {
   default = "rodrigo"
 }
+
+variable "enabled_metrics" {
+  description = "Metricas para o cloudwatch"
+  type        = "list"
+
+  default = [
+    "GroupMinSize",
+    "GroupMaxSize",
+    "GroupDesiredCapacity",
+    "GroupInServiceInstances",
+    "GroupPendingInstances",
+    "GroupStandbyInstances",
+    "GroupTerminatingInstances",
+    "GroupTotalInstances",
+  ]
+}

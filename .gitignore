@@ -3,3 +3,4 @@ variaveis/.terraform/plugins/*
 modulos/.terraform/plugins/*
 site-s3/.terraform/plugins/*
 ec2_security/.terraform/plugins/*
+ec2_security/scale_policy/.terraform/plugins/*

@@ -26,7 +26,7 @@ resource "aws_subnet" "private_a" {
   availability_zone = "${var.region}a"
 
   tags = {
-    Name = "Private 1a"
+    Name = "Private a"
   }
 }
 
@@ -206,8 +206,8 @@ resource "aws_launch_configuration" "this" {
   user_data = "${file("script.sh")}"
 }
 
-resource "aws_autoscaling_group" "this" {
-  name                      = "terraform-autoscaling"
+resource "aws_autoscaling_group" "thi" {
+  name                      = "thi"
   vpc_zone_identifier       = ["${aws_subnet.public_a.id}"]
   launch_configuration      = "${aws_launch_configuration.this.name}"
   min_size                  = 2
@@ -216,4 +216,65 @@ resource "aws_autoscaling_group" "this" {
   health_check_type         = "ELB"
   force_delete              = true
   target_group_arns         = ["${aws_lb_target_group.tg.arn}"]
+  enabled_metrics           = ["${var.enabled_metrics}"]
+}
+
+module "scaleup" {
+  source = "./scale_policy"
+
+  name = "scaleup"
+
+  autoscaling_group_name = "${aws_autoscaling_group.thi.name}"
+
+  scaling_adjustment = "1"
+}
+
+module "scaledown" {
+  source = "./scale_policy"
+
+  name = "scaledown"
+
+  autoscaling_group_name = "${aws_autoscaling_group.thi.name}"
+
+  scaling_adjustment = "-1"
+}
+
+# cloudwatch alarmes
+
+resource "aws_cloudwatch_metric_alarm" "up" {
+  alarm_name          = "ALB Scale UP"
+  alarm_description   = "Subir ec2 quando for igual ou maior que 80% do uso de cpu 1 vez em 60 segundos"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = "60"
+  statistic           = "Average"
+  threshold           = "80"
+
+  dimensions = {
+    "AutoScalingGroupName" = "${aws_autoscaling_group.thi.name}"
+  }
+
+  actions_enabled = true
+  alarm_actions   = ["${module.scaleup.arn}"]
+}
+
+resource "aws_cloudwatch_metric_alarm" "down" {
+  alarm_name          = "ALB Scale DOWN"
+  alarm_description   = "Descer ec2 se o uso de cpu for menor ou igual a 50% 1 vez em 60 segundos"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = "60"
+  statistic           = "Average"
+  threshold           = "50"
+
+  dimensions = {
+    "AutoScalingGroupName" = "${aws_autoscaling_group.thi.name}"
+  }
+
+  actions_enabled = true
+  alarm_actions   = ["${module.scaledown.arn}"]
 }
