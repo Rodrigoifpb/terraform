@@ -8,3 +8,4 @@ Neste projeto temos os arquivos de alguns testes do uso do Terraform no provedor
   - Exemplo de uso de variaveis
   - Utilizando Modulos
   - Site estatico com Bucket S3, CDN e SSL
+  - Load Balance com Auto Scalling, VPC, RDS e CLOUDWATCH
